@@ -1,0 +1,153 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"
+	import="java.util.ArrayList,com.otsi.action.DataBean"
+	isELIgnored="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<html>
+<meta charset="utf-8">
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js" />
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js" />
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js" />
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" />
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js" />
+<script src="path/to/chartjs/dist/Chart.js"></script>
+<!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"  rel = "stylesheet">
+   <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+      
+  <script>
+  $( function() {
+     $( "#d1" ).draggable();$( "#d2" ).draggable();$( "#d3" ).draggable();
+     $( "#d4" ).draggable();$( "#d5" ).draggable();$( "#d6" ).draggable();
+    $( "#d1" ).resizable({ cancel: ".cancel" ,  animate: true, helper: "ui-resizable-helper", minHeight: 290, minWidth: 340});$( "#d2" ).resizable({ cancel: ".cancel" ,  animate: true, helper: "ui-resizable-helper", minHeight: 300, minWidth: 340});
+    $( "#d3" ).resizable({ cancel: ".cancel" ,  animate: true, helper: "ui-resizable-helper", minHeight: 290, minWidth: 340}); $( "#d4" ).resizable({ cancel: ".cancel" ,  animate: true, helper: "ui-resizable-helper", minHeight: 290, minWidth: 340});
+    $( "#d5" ).resizable({ cancel: ".cancel" ,  animate: true, helper: "ui-resizable-helper", minHeight: 290, minWidth: 340});$( "#d6" ).resizable({ cancel: ".cancel" ,  animate: true, helper: "ui-resizable-helper", maxHeight: 250, maxWidth: 350, minHeight: 290, minWidth: 340});
+    
+  } );
+  </script>
+
+</head>
+<body >
+<div id="alertMsg" style="padding-left: 12px"></div>
+<div></div>
+<div id="chartsData"></div>
+<script type="text/javascript" src="DynamicFuntions.js"></script>
+<link rel="stylesheet" href="StyleSheet.css">
+
+</body>
+
+
+
+<script>
+var initial=true;
+//common field information 
+	var chart1;var makerNameClick="" ;var LineGraph ;var BarChart;var HighChart;var chart2;var chart6;
+var options;	var i=0;var year=[];var imported=[];var year_count=[];var imported_count=[];
+	var vch_name=[];var vch_name_count=[];var dist_name=[];var dist_name_count=[];var ac_count;var video_count;var makerNameCount = [];   var makerName = [];var noOfVechicles = [];var noOfVechiclesBodyType = [];var bodyType = [];
+var dist_wise=false;var year_wise=false;var vch_ctg=false;var maker_wise=true;
+					
+ajaxCall();	
+	 function onLoad(){
+		 
+	 
+ try{LineGraph.destroy(); BarChart.destroy(); chart2.destroy();	HighChart.destroy();chart1.destroy(); chart6.destroy();
+ year=[]; imported=[]; year_count=[]; imported_count=[];
+  vch_name=[];vch_name_count=[];dist_name=[]; dist_name_count=[]; makerNameCount = [];  makerName = []; 
+ }
+catch(err){}
+
+	 }//onLoad
+
+function ajaxCall(name,fieldkey){
+		 
+	 var name=name;
+	 var fieldkey=fieldkey;
+	 year=[]; imported=[]; year_count=[]; imported_count=[];
+	  vch_name=[];vch_name_count=[];dist_name=[]; dist_name_count=[];noOfVechiclesBodyType=[]; bodyType = []; makerNameCount = [];  makerName = []; 
+
+	  options= {	'onClick' : function(evt, item) {myFunc(evt,item,name)},	tooltips : {callbacks : {}}};
+		$.ajax({url : '<%=application.getContextPath()%>/GetChartData',
+				type : "GET",
+				data:{key:fieldkey,val:name},
+				
+				success : function(data){
+				
+				$("#chartsData").html("");
+					$("#chartsData").append('<table id="draggable"  style="border:2px solid black; width: 100%"  >');
+					var row="";var i=0;
+					var chart=[];var count=0;
+					for(i in data){
+					var chrtType=data[i].charttype;
+					var fieldKeyWord=data[i].fieldinfo;
+						
+						
+						if(count%2==0){$("#chartsData").append('<tr class="row" >');}
+						count=count+1;
+						if(data[i].charttype=="pie"){
+							dist_name=[];dist_name_count=[];
+					  $("#chartsData").append('<td id="d"'+i+' class="ui-widget-content" "col" ><div class="dropdown"style="float: right; padding-right: 80px;" ><button class="dropbtn">Dropdown</button> <div id="dropDown" class="dropdown-content"></div></div> <canvas id="pie-chartcanvas'+i+'" width="250" height="200" fieldKeyWord='+fieldKeyWord+'></canvas></td>');
+					  for(j in data[i].data ){
+							dist_name.push(data[i].data[j].name);
+		            		dist_name_count.push(data[i].data[j].count);
+					  }
+						
+						var ctxPie = $("#pie-chartcanvas"+i);
+						var data1 = {labels : dist_name,datasets : [ {label:"Customers Count State Wise",data :dist_name_count,backgroundColor : ["#DEB887","#A9A9A9","#DC143C","#F4A460","#2E8B57","#9ACD32",'moccasin', 'saddlebrown', 'lightpink'],labels :dist_name,
+							borderColor : [ "#CDA776","#989898","#CB252B","#E39371","#1D7A46" ],borderWidth : [ 1, 1, 1, 1,	1 ]} ]};
+						/* for ( var k in dist_name ){
+					    	$("#dropDown").append('<p  id="' + k + '" onClick=f1(0,[{_i:'+k+'}],)>' +dist_name[k]+ '<p>');
+					    	} */
+					    	 chart[i] = new Chart(ctxPie, {type : "pie",data : data1,options : options});
+						}//if pie
+						else if(data[i].charttype=="line"){
+							$("#chartsData").append('<td id="d"'+i+' class="ui-widget-content" "col" > <canvas id="mycanvas" width="250" height="200" fieldKeyWord='+fieldKeyWord+' ></canvas></td>');
+							for(j in data[i].data ){
+							vch_name.push(data[i].data[j].name);
+							vch_name_count.push(data[i].data[j].count);
+							}
+						chartdata = {labels:vch_name,datasets: [{labels: vch_name,label: "Vechicle Name Wise count  ",fill: false,lineTension: 0.1,backgroundColor: "rgba(59, 89, 152, 0.75)",borderColor: "rgba(59, 89, 152, 1)",
+							pointHoverBackgroundColor: "rgba(59, 89, 152, 1)",pointHoverBorderColor: "rgba(59, 89, 152, 1)",data: vch_name_count}]};
+						var ctxLine = $("#mycanvas"); 
+								 LineGraph = new Chart(ctxLine, { type: 'line', data: chartdata, options:options});
+								 
+						}//elseif line
+						else if(data[i].charttype=="bar"){
+							$("#chartsData").append('<td id="d"'+i+' class="ui-widget-content" "col" > <canvas id="bar-chartcanvas" width="250" height="200" fieldKeyWord='+fieldKeyWord+' ></canvas></td>');
+							var ctxBar = $("#bar-chartcanvas");
+						}//elseif bar
+						else if(data[i].charttype=="doughnut"){
+							$("#chartsData").append('<td id="d"'+i+' class="ui-widget-content" "col" > <canvas id="pie-chartcanvas-2" width="250" height="200" fieldKeyWord='+fieldKeyWord+'></canvas></td>');
+							for(j in data[i].data ){
+							makerName.push(data[i].data[j].name);
+							makerNameCount.push(data[i].data[j].count);
+							}
+						var	data2 = {labels:makerName ,datasets: [ {labels:makerName,data: makerNameCount,
+							  backgroundColor: ["#DCDCDC","#E9967A","#9ACD32",'indigo','saddlebrown','lightpink',"aqua","red","blue","green" ],
+								                borderWidth: [1, 1, 1, 1, 1]  }]};
+						var ctxDht = $("#pie-chartcanvas-2");
+						 chart[i] = new Chart(ctxDht, { type: "doughnut", data: data2, options:options });
+						}//elseif doughnut
+						
+						
+					
+				}//for data
+				
+					
+				}});//sucess
+	
+	
+	
+	
+	
+}// ajaxCall function
+
+
+</script>
+
+</html>
