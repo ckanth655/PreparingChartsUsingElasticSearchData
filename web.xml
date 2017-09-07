@@ -1,0 +1,111 @@
+
+<web-app>
+	<display-name>Archetype Created Web Application</display-name>
+	<servlet>
+		<servlet-name>AjaxData</servlet-name>
+		<servlet-class>com.otsi.action.AjaxData</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AjaxData</servlet-name>
+		<url-pattern>/AjaxData</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetBankDetailsCity</servlet-name>
+		<servlet-class>com.otsi.action.GetBankDetailsCity</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetBankDetailsCity</servlet-name>
+		<url-pattern>/GetBankDetailsCity</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetBankDetailsState</servlet-name>
+		<servlet-class>com.otsi.action.GetBankDetailsState</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetBankDetailsState</servlet-name>
+		<url-pattern>/GetBankDetailsState</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetCurrentStateWiseDetails</servlet-name>
+		<servlet-class>com.otsi.action.GetCurrentStateWiseDetails</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetCurrentStateWiseDetails</servlet-name>
+		<url-pattern>/GetCurrentStateWiseDetails</url-pattern>
+	</servlet-mapping>
+
+
+<servlet>
+		<servlet-name>GetPermanentStateWiseDetails</servlet-name>
+		<servlet-class>com.otsi.action.GetPermanentStateWiseDetails</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetPermanentStateWiseDetails</servlet-name>
+		<url-pattern>/GetPermanentStateWiseDetails</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetMakerBodyType</servlet-name>
+		<servlet-class>com.otsi.action.GetMakerBodyType</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetMakerBodyType</servlet-name>
+		<url-pattern>/GetMakerBodyType</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetMakerDetails</servlet-name>
+		<servlet-class>com.otsi.action.GetMakerDetails</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>GetDistrictWiseDetails</display-name>
+		<servlet-name>GetDistrictWiseDetails</servlet-name>
+		<servlet-class>com.otsi.action.GetDistrictWiseDetails</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetMakerDetails</servlet-name>
+		<url-pattern>/GetMakerDetails</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetDistrictWiseDetails</servlet-name>
+		<url-pattern>/GetDistrictWiseDetails</url-pattern>
+	</servlet-mapping>
+
+<servlet>
+		<servlet-name>GetMakerBodyType2</servlet-name>
+		<servlet-class>com.otsi.action.GetMakerBodyType2</servlet-class>
+	</servlet>
+<servlet>
+	<description>
+	</description>
+	<display-name>DistSubAggregation</display-name>
+	<servlet-name>DistSubAggregation</servlet-name>
+	<servlet-class>com.otsi.action.DistSubAggregation</servlet-class>
+</servlet>
+<servlet>
+	<description>
+	</description>
+	<display-name>GetChartData</display-name>
+	<servlet-name>GetChartData</servlet-name>
+	<servlet-class>com.otsi.action.GetChartData</servlet-class>
+</servlet>
+	<servlet-mapping>
+		<servlet-name>GetMakerBodyType2</servlet-name>
+		<url-pattern>/GetMakerBodyType2</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DistSubAggregation</servlet-name>
+		<url-pattern>/DistSubAggregation</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetChartData</servlet-name>
+		<url-pattern>/GetChartData</url-pattern>
+	</servlet-mapping>
+
+
+</web-app>
