@@ -38,9 +38,6 @@ import com.google.gson.Gson;
  * Servlet implementation class GetChartData
  */
 public class GetChartData extends HttpServlet {
-	
-	
-   
 
 	private static final long serialVersionUID = 1L;
        
@@ -134,13 +131,10 @@ public class GetChartData extends HttpServlet {
 				
 					 }catch (Exception e) {}
 					 
-//					 if(!flag){
+				
 							chartData = getChartDataTerm(fieldNameInfo,qb);
-//						}	
-				}//if
-				/*else if(fieldNameInfo.getTypeOfQuery().equals("date")){
-					chartData = getChartDataDate(fieldNameInfo);
-				}*/
+							
+				}
 				chartsData.put(fieldNameInfo.getChartType()+index,chartData);
 			}//foreach 
 			try{
@@ -165,81 +159,7 @@ public class GetChartData extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-public      HashMap   getChartDataTerm(FieldNameInfo object,BoolQueryBuilder qb){
-	
-	String fieldKeyWord=object.getFeild();
-	ArrayList datachart=new ArrayList<>();
-	HashMap chartData=new HashMap<>();
-	chartData.put("charttype", object.getChartType());
-	chartData.put("fieldinfo", object.getFeild());
-System.out.println(" field keyword "+fieldKeyWord);
-SearchResponse curnt_st_dist_count =null;
-	if(object.getChartType()!="pie"){
-		curnt_st_dist_count =client.prepareSearch(object.getIndex())
-			       .setQuery(qb)
-			       .addAggregation( AggregationBuilders.terms("termName").field(fieldKeyWord).size(object.getSize()))
-			       .execute()
-			       .actionGet();
-	}else{
-		curnt_st_dist_count =client.prepareSearch(object.getIndex())
-			       .setQuery(qb)
-			       .addAggregation( AggregationBuilders.terms("termName").field(fieldKeyWord))
-			       .execute()
-			       .actionGet();
-	}
- 
-		Terms  termsDt =	curnt_st_dist_count.getAggregations().get("termName");
-	
-	List<Bucket> buckets_Dt = termsDt.getBuckets();
-	
-	for (Bucket bucket : buckets_Dt) {
 
-			long count=bucket.getDocCount();
-			String key=bucket.getKeyAsString();
-			HashMap< String, Object> data=new HashMap<>();
-			data.put( "name", key);
-			data.put("count", count);
-		    datachart.add(data);
-		    
-	}
-	System.out.println( datachart);
-	 chartData.put("data", datachart);
-	return chartData;
-}//getChartDataTerm
-public HashMap getChartDataDate(FieldNameInfo object){
-	
-	HashMap chartData=new HashMap<>();
-	ArrayList datachart=new ArrayList<>();
-	chartData.put("charttype",object.getChartType());
-	chartData.put("fieldinfo", object);
-	String field=object.getFeild();
-	 BoolQueryBuilder qb =  QueryBuilders.boolQuery()
-			    .mustNot( QueryBuilders.termQuery(field, ""))    
-			    .mustNot( QueryBuilders.termQuery(field, "0"))
-			    .must( QueryBuilders.termQuery("c_state_name.keyword", "Delhi"))
-			    .filter( QueryBuilders.rangeQuery(field).format("dd/MM/yyyy||yyyy").gt("31/12/2013").lte("31/12/2017"))
-			    ;  
-	 Order order=Order.KEY_ASC;
-	 AggregationBuilder aggrg=AggregationBuilders.dateHistogram("yr").field(field). minDocCount(5).interval(1).dateHistogramInterval(DateHistogramInterval.YEAR).order(order);
-		
-	SearchResponse curnt_st_year_count =client.prepareSearch(object.getIndex())
-		       .setQuery(qb)
-	          .addAggregation( aggrg)
-		       .execute()
-		       .actionGet();
-					
-				InternalDateHistogram   terms1 =curnt_st_year_count.getAggregations().get("yr");
-						for (org.elasticsearch.search.aggregations.bucket.histogram.InternalDateHistogram.Bucket bucket2 : terms1.getBuckets()) {
-					int key = ((org.joda.time.DateTime) bucket2.getKey()).getYear();
-					long count=bucket2.getDocCount();
-					HashMap< String, Object> data=new HashMap<>();
-					data.put( "name", key);
-					data.put("count", count);
-				  datachart.add(data);
-						}
-						 chartData.put("data", datachart);
-	return chartData;
-}//getChartDataDate
 	
 
 }
