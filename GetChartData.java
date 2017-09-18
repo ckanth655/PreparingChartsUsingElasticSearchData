@@ -34,16 +34,10 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 
 import com.google.gson.Gson;
 
-/**
- * Servlet implementation class GetChartData
- */
 public class GetChartData extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+  
     public GetChartData() {
     	
         super();
@@ -54,11 +48,6 @@ public class GetChartData extends HttpServlet {
     static{
     	client  =GetClientObjectUtil.getObject();	
     }
-    
-  
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/json");
 	
@@ -67,8 +56,6 @@ public class GetChartData extends HttpServlet {
 		ArrayList<FieldNameInfo> getFeildInfo=FieldNameInfo.getData();
 		
 		HashMap<String ,Object> chartsData=new HashMap<>();
-			
-		
 			/**
 			 * for each field getting chart data by calling respective method and stored in map and adding this data to chartData map
 			 */
